@@ -64,7 +64,7 @@ router.delete('/:id',async (req, res) => {
       where: {id: req.params.id}
     });
     if (!tripData) {
-      res.status(404).json({message: 'No category with this id 4'});
+      res.status(404).json({message: 'No category with this id found'});
       return;
     }
     res.status(200).json(categoryData);
