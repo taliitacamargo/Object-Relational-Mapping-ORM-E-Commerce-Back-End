@@ -1,5 +1,5 @@
 const { Tag } = require('../models');
-
+console.log(`this is the seed file`, Tag);
 const tagData = [
   {
     tag_name: 'rock music',

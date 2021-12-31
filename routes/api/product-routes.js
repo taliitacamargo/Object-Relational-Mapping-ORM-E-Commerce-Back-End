@@ -7,7 +7,7 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 router.get('/',async (req, res) => {
   try {
     const productData = await Product.findAll({
-      include: [{ model: Category, through: Tag, as: 'product_tags' }]
+      include: [Category, {model: Tag, through: ProductTag }]
     });
     res.status(200).json(productData);
   } catch (err) {
@@ -24,7 +24,7 @@ router.get('/:id',async (req, res) => {
       include: [{ model: Category, through: Tag, as: 'product_tags' }]
     });
     if (!productData) {
-      res.status(404).json({ message: 'No product found with this id!' });
+      res.status(404).json({ message: `No product found with this id ${req.params.id}!` });
       return;
     }
     res.status(200), json(productData);
@@ -37,12 +37,7 @@ router.get('/:id',async (req, res) => {
 
 // create new product
 router.post('/', async (req, res) => {
-  try {
-    const productData = await Product.create(req.body);
-    res.status(200).json(productData);
-  } catch (err) {
-    res.status(400).json(err);
-  }
+
   /* req.body should look like this...
   
     {
@@ -125,10 +120,10 @@ router.delete('/:id',async (req, res) => {
       }
     });
     if (!productData) {
-      res.status(404).json({ message: 'No product found with this id 2!' });
+      res.status(404).json({ message: `No product found with this id ${req.params.id}!` });
       return;
     }
-    res.status(200).json(productData);
+    res.status(200).json({message: `Product with id ${req.params.id} has been deleted.`});
 
   } catch (err) {
     res.status(500).json(err);
